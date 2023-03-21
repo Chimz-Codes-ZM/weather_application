@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { FiSearch } from "react-icons/fi";
 import Clock from "@/components/clock";
-import Current_weather from "@/components/current_weather";
 
 function Home() {
   const [weatherData, setWeatherData] = useState(null);
   const router = useRouter();
 
-  const handleSearchSubmit = async (cityName) => {
+  const handleSearchSubmit = async (cityName: string) => {
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=72e275c2b6c06e0fb3fa35b8dd431cd9&units=metric`
@@ -19,21 +18,24 @@ function Home() {
         pathname: "/weather",
         query: {
           cityName,
-          temperature: weatherData.main.temp,
-          description: weatherData.weather[0].description,
-          windSpeed: weatherData.wind.speed,
+          temperature: data.main.temp,
+          description: data.weather[0].description,
+          windSpeed: data.wind.speed,
         },
       });
     } catch (error) {
       console.error(error);
     }
   };
+  
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevents default form submission behavior
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.currentTarget);
     const cityName = formData.get("searchTerm");
-    handleSearchSubmit(cityName);
+    if(cityName === "string") {
+      handleSearchSubmit(cityName);
+    }
   };
 
   return (
