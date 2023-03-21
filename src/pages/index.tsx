@@ -33,7 +33,7 @@ function Home() {
     event.preventDefault(); // Prevents default form submission behavior
     const formData = new FormData(event.currentTarget);
     const cityName = formData.get("searchTerm");
-    if(cityName === "string") {
+    if(typeof cityName === "string") {
       handleSearchSubmit(cityName);
     }
   };
